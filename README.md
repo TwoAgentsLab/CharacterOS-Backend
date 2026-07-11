@@ -14,7 +14,7 @@
 
 <p align="center">
     <img src="https://img.shields.io/badge/status-in%20development-orange"/>
-    <img src="https://img.shields.io/badge/python-3.12-blue"/>
+    <img src="https://img.shields.io/badge/python-3.14-blue"/>
     <img src="https://img.shields.io/badge/FastAPI-Backend-green"/>
     <img src="https://img.shields.io/badge/PostgreSQL-Database-blue"/>
     <img src="https://img.shields.io/badge/LangGraph-Orchestration-purple"/>
