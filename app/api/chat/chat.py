@@ -1,7 +1,7 @@
 import logging
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from app.schemas.states import ChatRequest
+from app.schemas.states import ChatRequest, ChatResponse
 from app.graph.npc_graph import build_graph
 from app.database.db import SessionLocal
 from app.database.models.projects import Projects
@@ -13,7 +13,7 @@ router = APIRouter()
 graph = build_graph()
 security = HTTPBearer()
     
-@router.post("/chat")
+@router.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest, creds: HTTPAuthorizationCredentials = Depends(security)):
     db = SessionLocal()
     
@@ -45,7 +45,7 @@ async def chat(req: ChatRequest, creds: HTTPAuthorizationCredentials = Depends(s
         result = graph.invoke(state)
         
         return {
-            "response": result["response"]
+            "npc_response": result["response"]
         }
     except Exception as e:
         logger.error("Error from test API: %s", e)
