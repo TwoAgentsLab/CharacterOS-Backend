@@ -1,8 +1,10 @@
 import logging
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 from app.schemas.states import SignUpResponse, SignUpRequest
 from app.database.db import SessionLocal
 from app.services.auth_service import sign_up_user
+from app.services.auth_service import create_access_token
 from app.database.models.user import User
 from pwdlib import PasswordHash
 
@@ -35,14 +37,29 @@ async def sign_up(req: SignUpRequest):
             password=hashed_password
         )
         
-        return {
-            "message": "Account created successfully",
-            "user": {
-                "id": user.id,
-                "name": user.name,
-                "email": user.email
+        token = create_access_token(user_id=user.id)
+        
+        response = JSONResponse(
+            content={
+                "message": "Account created successfully",
+                "user": {
+                    "id": user.id,
+                    "name": user.name,
+                    "email": user.email
+                }
             }
-        }
+        )
+        
+        response.set_cookie(
+            key="access_token",
+            value=token,
+            httponly=True,
+            secure=False,
+            samesite="lax",
+            max_age=3600
+        )
+        
+        return response
     except HTTPException:
         raise
     except Exception as e:
