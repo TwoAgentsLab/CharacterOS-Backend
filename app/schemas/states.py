@@ -22,13 +22,24 @@ class SignUpRequest(BaseModel):
     email: str
     password: str
     
-# The Response from the database
+# The user Response from the database
 class UserResponse(BaseModel):
     id: int
     name: str
     email: str
     
+# Defin the response model of Sign up endpoint
 class SignUpResponse(BaseModel):
+    message: str
+    user: UserResponse
+    
+# Defin the request model for login endpoint
+class SignInRequest(BaseModel):
+    email: str
+    password: str
+    
+# Define the response model of login endpoint
+class SignInResponse(BaseModel):
     message: str
     user: UserResponse
 
